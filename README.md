@@ -1,2 +1,2 @@
-# YelpCamp
-Full stack project YelpCamp
+# HavenCamp
+Full stack project HavenCamp
