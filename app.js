@@ -42,6 +42,7 @@ app.get('/makecampground', async (req, res) => {
     });
     // save this documents into collection: campgrounds
     await camp.save();
+    res.send(camp)
 })
 
 app.listen(3000, () => {
