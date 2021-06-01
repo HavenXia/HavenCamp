@@ -1,3 +1,4 @@
+// array of descriptors and places
 module.exports.descriptors = [
     'Forest',
     'Ancient',

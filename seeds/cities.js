@@ -1,3 +1,4 @@
+// thounds of cities
 module.exports = [
     {
         city: "New York",

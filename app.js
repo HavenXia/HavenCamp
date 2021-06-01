@@ -27,22 +27,17 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 
-
-
 app.get('/', (req, res) => {
     res.render('home')
 })
 
-// insert campground into 
-app.get('/makecampground', async (req, res) => {
-    // cast an object to campground 
-    const camp = new Campground({
-        title: 'My Backyard',
-        description: 'cheap camping'
-    });
-    // save this documents into collection: campgrounds
-    await camp.save();
-    res.send(camp)
+// index operation: show all campgrounds
+app.get('/campground', async (req, res) => {
+
+    // get an array of all campgrounds
+    const campgrounds = await Campground.find({});
+    // render the array to ejs
+    res.render('campgrounds/index', campgrounds);
 })
 
 app.listen(3000, () => {
