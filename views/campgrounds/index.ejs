@@ -11,14 +11,17 @@
     <% for (let campground of campgrounds) {%>
         <!-- use card for each campground -->
         <div class="card mb-3">
+            <!-- 一个row class可以分成12个 -->
             <div class="row">
 
                 <!-- image -->
+                <!-- 大于medium的时候占据4个单位 -->
                 <div class="col-md-4">
                     <img src="<%= campground.image %> " class="img-fluid" alt="">
                 </div>
 
                 <!-- card body -->
+                <!-- 大于medium的时候占据八个单位 -->
                 <div class="col-md-8">
                     <div class="card-body">
                         <h5 class="card-title">
