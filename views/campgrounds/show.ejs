@@ -7,16 +7,20 @@
     <h2>
         <%= campground.location %>
     </h2>
+    <img src="<%= campground.image %>" class="img-fluid" alt="">
+    <p>
+        <%= campground.description %>
+    </p>
     <!-- Edit the campground -->
-    <div>
+    <p>
         <a href="/campgrounds/<%= campground._id %>/edit ">Edit</a>
-    </div>
+    </p>
     <!-- Delete the campground -->
-    <div>
-        <form action="/campgrounds/<%= campground._id %>?_method=delete" method="post">
-            <button>Delete</button>
-        </form>
-    </div>
+    <p>
+    <form action="/campgrounds/<%= campground._id %>?_method=delete" method="post">
+        <button>Delete</button>
+    </form>
+    </p>
 
     <footer>
         <!-- return to all campgrounds -->

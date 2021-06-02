@@ -36,10 +36,14 @@ const seedDB = async () => {
     for (let i = 0; i < 50; i++) {
         // random city in cities(array)
         const random1000 = Math.floor(Math.random() * 1000)
+        const price = Math.floor(Math.random() * 20) + 10
         // take random city and construct the campground
         const camp = new Campground({
             location: `${cities[random1000].city}, ${cities[random1000].state}`,
-            title: `${sample(descriptors)} ${sample(places)}`
+            title: `${sample(descriptors)} ${sample(places)}`,
+            image: 'https://api.pixivweb.com/api.php?return=img',
+            description: 'random description',
+            price: price
         });
         await camp.save();
     }
