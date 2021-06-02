@@ -1,28 +1,50 @@
 <!-- refer to the boilerplate layout -->
 <% layout('./layouts/boilerplate') %>
 
-    <h1>
-        <%= campground.title %>
-    </h1>
-    <h2>
-        <%= campground.location %>
-    </h2>
-    <img src="<%= campground.image %>" class="img-fluid" alt="">
-    <p>
-        <%= campground.description %>
-    </p>
-    <!-- Edit the campground -->
-    <p>
-        <a href="/campgrounds/<%= campground._id %>/edit ">Edit</a>
-    </p>
-    <!-- Delete the campground -->
-    <p>
-    <form action="/campgrounds/<%= campground._id %>?_method=delete" method="post">
-        <button>Delete</button>
-    </form>
-    </p>
+    <div class="row">
+        <!-- 居中 -->
+        <div class="col-6 offset-3">
+            <!-- card template from bootstrap document -->
+            <div class="card mb-5">
+                <img src="<%= campground.image %>" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <!-- title -->
+                    <h5 class="card-title">
+                        <%= campground.title %>
+                    </h5>
+                    <!-- description -->
+                    <p class="card-text">
+                        <%= campground.description %>
+                    </p>
+                </div>
 
-    <footer>
-        <!-- return to all campgrounds -->
-        <a href="/campgrounds">All Campgrounds</a>
-    </footer>
+                <!-- list of texts -->
+                <ul class="list-group list-group-flush">
+                    <!-- location -->
+                    <li class="list-group-item text-muted">
+                        <%= campground.location %>
+                    </li>
+                    <!-- price -->
+                    <li class="list-group-item">
+                        $<%= campground.price %> / night
+                    </li>
+                </ul>
+
+                <!-- second card-body -->
+                <div class="card-body">
+                    <!-- edit is a button-like anchor -->
+                    <a class="card-link btn btn-warning" href="/campgrounds/<%= campground._id %>/edit ">Edit</a>
+
+                    <!-- delete is a button-liek form -->
+                    <form class="d-inline" action="/campgrounds/<%= campground._id %>?_method=delete" method="post">
+                        <button class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
+
+                <div class="card-footer">
+                    <!-- return to all campgrounds -->
+                    <a href="/campgrounds">All Campgrounds</a>
+                </div>
+            </div>
+        </div>
+    </div>
