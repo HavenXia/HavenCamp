@@ -1,14 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Campground</title>
-</head>
-
-<body>
+<!-- refer to the boilerplate layout -->
+<% layout('./layouts/boilerplate') %>
     <h1>Edit Campground</h1>
     <!-- override the post method to put -->
     <form action="/campgrounds/<%= campground._id %>?_method=put" method="post">
@@ -25,7 +16,3 @@
     </form>
     <!-- back button to the canpground to be edit-->
     <a href="/campgrounds/,<%= campground._id %> ">Back To Campgrounds</a>
-
-</body>
-
-</html>

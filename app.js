@@ -1,8 +1,10 @@
-// configurations 
+// packages 
 const express = require('express');
 const app = express();
 const path = require('path');
 const mongoose = require('mongoose');
+// package for layout
+const ejsMate = require('ejs-mate')
 
 // require the method-override
 const methodOverride = require('method-override')
@@ -24,6 +26,7 @@ db.once("open", () => {
     console.log("Database connected");
 });
 
+app.engine('ejs', ejsMate);
 
 // set ejs path
 app.set('view engine', 'ejs');
@@ -45,6 +48,7 @@ app.get('/campgrounds', async (req, res) => {
     res.render('campgrounds/index', { campgrounds });
 })
 
+
 // new form operation
 // must before show operation to make sure the order is right
 app.get('/campgrounds/new', (req, res) => {
@@ -61,6 +65,7 @@ app.post('/campgrounds', async (req, res) => {
     res.redirect(`/campgrounds/${newCampground._id}`)
 })
 
+
 // show operation
 app.get('/campgrounds/:id', async (req, res) => {
     // get the id from input
@@ -69,6 +74,8 @@ app.get('/campgrounds/:id', async (req, res) => {
     // render the found campground to ejs
     res.render('campgrounds/show', { campground })
 })
+
+
 
 // edit form operation, the order matters
 app.get('/campgrounds/:id/edit', async (req, res) => {
@@ -88,6 +95,8 @@ app.put('/campgrounds/:id', async (req, res) => {
     res.redirect(`/campgrounds/${campground._id}`)
 })
 
+
+// delete operation
 app.delete('/campgrounds/:id', async (req, res) => {
     const { id } = req.params;
     await Campground.findByIdAndDelete(id);
