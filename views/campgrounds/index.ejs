@@ -6,14 +6,39 @@
         <a href="/campgrounds/new">Add Campground</a>
     </div>
     <!-- show all campgrounds -->
-    <ul>
-        <!-- campgrounds is rendered from app.js -->
-        <% for (let campground of campgrounds) {%>
-            <li>
-                <!-- anchor of the campus ground title -->
-                <a href="/campgrounds/<%= campground._id %> ">
-                    <%= campground.title %>
-                </a>
-            </li>
-            <% } %>
-    </ul>
+
+    <!-- campgrounds is rendered from app.js -->
+    <% for (let campground of campgrounds) {%>
+        <!-- use card for each campground -->
+        <div class="card mb-3">
+            <div class="row">
+
+                <!-- image -->
+                <div class="col-md-4">
+                    <img src="<%= campground.image %> " class="img-fluid" alt="">
+                </div>
+
+                <!-- card body -->
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <%= campground.title %>
+                        </h5>
+                        <!-- description -->
+                        <p class="card-text">
+                            <%= campground.description %>
+                        </p>
+                        <!-- location -->
+                        <p class="card-text">
+                            <small class="text-muted">
+                                <%= campground.location %>
+                            </small>
+                        </p>
+                        <!-- show the anchor as a button -->
+                        <a class="btn btn-primary" href="/campgrounds/<%= campground._id %>">View <%= campground.title
+                                %></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <% } %>
