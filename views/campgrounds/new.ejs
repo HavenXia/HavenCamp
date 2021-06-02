@@ -1,17 +1,49 @@
 <!-- refer to the boilerplate layout -->
 <% layout('./layouts/boilerplate') %>
 
-    <form action="/campgrounds" method="post">
-        <div>
-            <!-- id is used for label, name is used for req.param in js -->
-            <label for="title">Title</label>
-            <input type="text" id="title" name="campground[title]">
+    <div class="row">
+        <h1 class="text-center">New Campground</h1>
+        <!-- offset3 能让这个div处于12个单位的正中间 -->
+        <div class="col-6 offset-3">
+
+            <form action="/campgrounds" method="post">
+                <div class="mb-3">
+                    <!-- id is used for label, name is used for req.param in js -->
+                    <!-- form-label and form-control is important -->
+                    <label class="form-label" for="title">Title</label>
+                    <input class="form-control" type="text" id="title" name="campground[title]">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="location">Location</label>
+                    <input class="form-control" type="text" id="location" name="campground[location]">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="image">Image Url</label>
+                    <input class="form-control" type="text" id="image" name="campground[image]">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="price">Campground Price</label>
+                    <div class="input-group">
+                        <span class="input-group-text" id="price-label">$</span>
+                        <input type="text" class="form-control" id="price" name="campground[price]" placeholder="0.00"
+                            aria-describedby="price-label">
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <!-- description use textarea to allow expand -->
+                    <label class="form-label" for="description">Description</label>
+                    <textarea class="form-control" type="text" id="description" name="campground[description]">
+                    </textarea>
+                </div>
+                <!-- button -->
+                <div class="mb-3">
+                    <button class="btn btn-success">Add Campground</button>
+                </div>
+
+            </form>
+            <!-- back button to all canpgrounds-->
+            <a href="/campgrounds">All Campgrounds</a>
         </div>
-        <div>
-            <label for="location">Location</label>
-            <input type="text" id="location" name="campground[location]">
-        </div>
-        <button>Add Campground</button>
-    </form>
-    <!-- back button to all canpgrounds-->
-    <a href="/campgrounds">All Campgrounds</a>
+    </div>

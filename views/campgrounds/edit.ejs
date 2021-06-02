@@ -1,5 +1,6 @@
 <!-- refer to the boilerplate layout -->
 <% layout('./layouts/boilerplate') %>
+
     <h1>Edit Campground</h1>
     <!-- override the post method to put -->
     <form action="/campgrounds/<%= campground._id %>?_method=put" method="post">
