@@ -18,6 +18,7 @@ const ExpressError = require('./utils/ExpressError')
 
 // sechema validation in js
 const Joi = require('joi')
+const { campgroundSchema } = require('./schemas.js')
 
 // connect to database
 mongoose.connect('mongodb://localhost:27017/haven-camp', {
@@ -43,6 +44,25 @@ app.use(express.urlencoded({ extended: true }));
 // override configuration
 app.use(methodOverride('_method'))
 
+
+// middleware in function form, optionaly use
+const validateCampground = (req, res, next) => {
+    // server side validation - 防止有人从postman发送request
+    // use JOI schema but not Mongo schema to validate
+    // then validate the req.body
+    const { error } = campgroundSchema.validate(req.body);
+    // if error, use the detail to create ExpressError and catch it
+    if (error) {
+        // detail is an array of object, combine them as a string
+        const msg = error.details.map(el => el.message).join(',')
+        throw new ExpressError(msg, 400);
+    } else {
+        // if no error, must go to next handler
+        next();
+    }
+}
+
+
 app.get('/', (req, res) => {
     res.render('home')
 })
@@ -62,31 +82,8 @@ app.get('/campgrounds/new', (req, res) => {
     res.render('campgrounds/new')
 })
 
-// add the new documents into db
-app.post('/campgrounds', catchAsync(async (req, res) => {
-
-    // server side validation - 防止有人从postman发送request
-    // use JOI schema but not Mongo schema to validate
-    const compgroundSchema = Joi.object({
-        // campground是required的object, 确保这个object存在于req.body
-        campground: Joi.object({
-            title: Joi.string().required(),
-            price: Joi.number().required.min(0),
-            image: Joi.string().required(),
-            location: Joi.string().required(),
-            description: Joi.string().required()
-        }).required()
-    })
-
-    // then validate the req.body
-    const { error } = compgroundSchema.validate(req.body);
-    // if error, use the detail to create ExpressError and catch it
-    if (error) {
-        // detail is an array of object, combine them as a string
-        const msg = error.details.map(el => el.message).join(',')
-        throw new ExpressError(msg, 400);
-    }
-
+// add the new documents into db, with middleware
+app.post('/campgrounds', validateCampground, catchAsync(async (req, res) => {
     // cast to Campground
     // 这里加上campground是因为ejs里面写的是campground[title]
     const newCampground = new Campground(req.body.campground);
@@ -117,7 +114,7 @@ app.get('/campgrounds/:id/edit', catchAsync(async (req, res) => {
 }))
 
 // put method to update campground
-app.put('/campgrounds/:id', catchAsync(async (req, res) => {
+app.put('/campgrounds/:id', validateCampground, catchAsync(async (req, res) => {
     // get id
     const { id } = req.params;
     // update the dpcument with req.body.campground (是个object)
