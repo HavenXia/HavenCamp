@@ -12,6 +12,9 @@ const methodOverride = require('method-override')
 // require the campground model 
 const Campground = require('./models/campground')
 
+// export the ExpressError class and catchAsync function
+const catchAsync = require('./utils/catchAsync')
+
 // connect to database
 mongoose.connect('mongodb://localhost:27017/haven-camp', {
     useNewUrlParser: true,
@@ -41,12 +44,12 @@ app.get('/', (req, res) => {
 })
 
 // index operation: show all campgrounds
-app.get('/campgrounds', async (req, res) => {
+app.get('/campgrounds', catchAsync(async (req, res) => {
     // get an array of all campgrounds
     const campgrounds = await Campground.find({});
     // render the array to ejs (views/campgrounds/index.ejs)
     res.render('campgrounds/index', { campgrounds });
-})
+}))
 
 
 // new form operation
@@ -56,51 +59,56 @@ app.get('/campgrounds/new', (req, res) => {
 })
 
 // add the new documents into db
-app.post('/campgrounds', async (req, res) => {
+app.post('/campgrounds', catchAsync(async (req, res) => {
     // cast to Campground
     // 这里加上campground是因为ejs里面写的是campground[title]
     const newCampground = new Campground(req.body.campground);
     await newCampground.save();
     // redirect with id
     res.redirect(`/campgrounds/${newCampground._id}`)
-})
+}))
 
 
 // show operation
-app.get('/campgrounds/:id', async (req, res) => {
+app.get('/campgrounds/:id', catchAsync(async (req, res) => {
     // get the id from input
     const { id } = req.params;
     const campground = await Campground.findById(id);
     // render the found campground to ejs
     res.render('campgrounds/show', { campground })
-})
+}))
 
 
 
 // edit form operation, the order matters
-app.get('/campgrounds/:id/edit', async (req, res) => {
+app.get('/campgrounds/:id/edit', catchAsync(async (req, res) => {
     // get the id from input
     const { id } = req.params;
     const campground = await Campground.findById(id);
     // render the found campground to ejs
     res.render('campgrounds/edit', { campground })
-})
+}))
 
 // put method to update campground
-app.put('/campgrounds/:id', async (req, res) => {
+app.put('/campgrounds/:id', catchAsync(async (req, res) => {
     // get id
     const { id } = req.params;
     // update the dpcument with req.body.campground (是个object)
     const campground = await Campground.findByIdAndUpdate(id, req.body.campground);
     res.redirect(`/campgrounds/${campground._id}`)
-})
+}))
 
 
 // delete operation
-app.delete('/campgrounds/:id', async (req, res) => {
+app.delete('/campgrounds/:id', catchAsync(async (req, res) => {
     const { id } = req.params;
     await Campground.findByIdAndDelete(id);
     res.redirect(`/campgrounds`)
+}))
+
+// error handler
+app.use((err, req, res, next) => {
+    res.send("Somthing wrong!")
 })
 
 app.listen(3000, () => {
