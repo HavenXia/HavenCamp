@@ -16,6 +16,9 @@ const Campground = require('./models/campground')
 const catchAsync = require('./utils/catchAsync')
 const ExpressError = require('./utils/ExpressError')
 
+// sechema validation in js
+const Joi = require('joi')
+
 // connect to database
 mongoose.connect('mongodb://localhost:27017/haven-camp', {
     useNewUrlParser: true,
@@ -61,11 +64,29 @@ app.get('/campgrounds/new', (req, res) => {
 
 // add the new documents into db
 app.post('/campgrounds', catchAsync(async (req, res) => {
-    // 如果req里压根没有这个campground主体, 主动抛出error
-    // 虽然实际上这已经在client-side被制止了
-    if (!req.body.campground) {
-        throw new ExpressError('Invalid Campground Data', 400);
+
+    // server side validation - 防止有人从postman发送request
+    // use JOI schema but not Mongo schema to validate
+    const compgroundSchema = Joi.object({
+        // campground是required的object, 确保这个object存在于req.body
+        campground: Joi.object({
+            title: Joi.string().required(),
+            price: Joi.number().required.min(0),
+            image: Joi.string().required(),
+            location: Joi.string().required(),
+            description: Joi.string().required()
+        }).required()
+    })
+
+    // then validate the req.body
+    const { error } = compgroundSchema.validate(req.body);
+    // if error, use the detail to create ExpressError and catch it
+    if (error) {
+        // detail is an array of object, combine them as a string
+        const msg = error.details.map(el => el.message).join(',')
+        throw new ExpressError(msg, 400);
     }
+
     // cast to Campground
     // 这里加上campground是因为ejs里面写的是campground[title]
     const newCampground = new Campground(req.body.campground);
