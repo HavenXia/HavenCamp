@@ -6,40 +6,67 @@
         <!-- offset3 能让这个div处于12个单位的正中间 -->
         <div class="col-6 offset-3">
 
-            <form action="/campgrounds/<%= campground._id %>?_method=put" method="post">
+            <!-- ask brower not to validate since Bootstrap will take over -->
+            <form class="validated-form" action="/campgrounds/<%= campground._id %>?_method=put" method="post"
+                novalidate>
+
+                <!-- Title -->
                 <div class="mb-3">
                     <!-- id is used for label, name is used for req.param in js -->
                     <!-- form-label and form-control is important -->
                     <label class="form-label" for="title">Title</label>
                     <input class="form-control" type="text" id="title" name="campground[title]"
-                        value="<%= campground.title %>">
+                        value="<%= campground.title %>" required>
+                    <!-- when input is valid, given this feedback -->
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
                 </div>
+
+                <!-- Location -->
                 <div class="mb-3">
                     <label class="form-label" for="location">Location</label>
                     <input class="form-control" type="text" id="location" name="campground[location]"
-                        value="<%= campground.location %>">
+                        value="<%= campground.location %>" required>
+                    <!-- when input is valid, given this feedback -->
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
                 </div>
+
+                <!-- Image -->
                 <div class="mb-3">
                     <label class="form-label" for="image">Image Url</label>
                     <input class="form-control" type="text" id="image" name="campground[image]"
-                        value="<%= campground.image %>">
+                        value="<%= campground.image %>" required>
+                    <!-- when input is valid, given this feedback -->
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
                 </div>
 
+                <!-- Price -->
                 <div class="mb-3">
                     <label class="form-label" for="price">Campground Price</label>
                     <div class="input-group">
                         <span class="input-group-text" id="price-label">$</span>
                         <input type="text" class="form-control" id="price" name="campground[price]" placeholder="0.00"
-                            value="<%= campground.price %>" aria-describedby="price-label">
+                            value="<%= campground.price %>" aria-describedby="price-label" required>
                     </div>
                 </div>
 
+                <!-- Description -->
                 <div class="mb-3">
                     <!-- description use textarea to allow expand -->
                     <label class="form-label" for="description">Description</label>
-                    <textarea class="form-control" type="text" id="description" name="campground[description]"><%= campground.description %> 
-                    </textarea>
+                    <textarea class="form-control" type="text" id="description" name="campground[description]"
+                        required><%= campground.description %></textarea>
+                    <!-- when input is valid, given this feedback -->
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
                 </div>
+
                 <!-- button -->
                 <div class="mb-3">
                     <button class="btn btn-success">Update Campground</button>
@@ -50,3 +77,27 @@
             <a href="/campgrounds/<%= campground._id %>">Back to Campground</a>
         </div>
     </div>
+
+    <script>
+        // 当bootstrap validation error时, 不发送request!
+        (function () {
+            'use strict'
+
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            // 这里的id和form的id必须相同!
+            const forms = document.querySelectorAll('.validated-form')
+
+            // Loop over them and prevent submission
+            Array.from(forms)
+                .forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })()
+    </script>
