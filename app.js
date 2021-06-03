@@ -14,6 +14,7 @@ const Campground = require('./models/campground')
 
 // export the ExpressError class and catchAsync function
 const catchAsync = require('./utils/catchAsync')
+const ExpressError = require('./utils/ExpressError')
 
 // connect to database
 mongoose.connect('mongodb://localhost:27017/haven-camp', {
@@ -60,6 +61,11 @@ app.get('/campgrounds/new', (req, res) => {
 
 // add the new documents into db
 app.post('/campgrounds', catchAsync(async (req, res) => {
+    // 如果req里压根没有这个campground主体, 主动抛出error
+    // 虽然实际上这已经在client-side被制止了
+    if (!req.body.campground) {
+        throw new ExpressError('Invalid Campground Data', 400);
+    }
     // cast to Campground
     // 这里加上campground是因为ejs里面写的是campground[title]
     const newCampground = new Campground(req.body.campground);
@@ -106,9 +112,20 @@ app.delete('/campgrounds/:id', catchAsync(async (req, res) => {
     res.redirect(`/campgrounds`)
 }))
 
+// all request that cannot match above will be handled by this!
+// 这种情况就抛出404 error, 这里不是async, 所以需要自己next()
+app.all('*', (req, res, next) => {
+    next(new ExpressError("Page Not Found", 404));
+})
+
 // error handler
 app.use((err, req, res, next) => {
-    res.send("Somthing wrong!")
+    //  destructure 提取statusCode, 如果不存在就设置500
+    const { statusCode = 500 } = err;
+    // 设置err object本身的default 
+    if (!err.message) err.message = 'Oh no, Something Went Wrong!';
+    // res设置status后render error 到error.ejs
+    res.status(statusCode).render('error', { err });
 })
 
 app.listen(3000, () => {

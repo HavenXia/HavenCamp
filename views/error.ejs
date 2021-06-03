@@ -1,0 +1,20 @@
+<!-- Ejs for error Page -->
+
+<!-- refer to the boilerplate layout -->
+<% layout('./layouts/boilerplate') %>
+
+    <div class="row">
+        <div class="col-6 offset-3">
+            <!-- 上面两行用grid让这个alert在中间6个单位显示 -->
+            <div class="alert alert-danger" role="alert">
+                <!-- header是error message -->
+                <h4 class="alert-heading">
+                    <%= err.message %>
+                </h4>
+                <p>
+                    <%= err.stack %>
+                </p>
+
+            </div>
+        </div>
+    </div>
