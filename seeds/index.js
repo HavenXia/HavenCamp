@@ -41,7 +41,8 @@ const seedDB = async () => {
         const camp = new Campground({
             location: `${cities[random1000].city}, ${cities[random1000].state}`,
             title: `${sample(descriptors)} ${sample(places)}`,
-            image: 'https://api.pixivweb.com/api.php?return=img',
+            image: 'https://api.ixiaowai.cn/mcapi/mcapi.php',
+            //image: 'https://api.pixivweb.com/api.php?return=img',
             description: 'random description',
             price: price
         });

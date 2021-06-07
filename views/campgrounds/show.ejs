@@ -2,16 +2,20 @@
 <% layout('./layouts/boilerplate') %>
 
     <div class="row">
+
         <!-- 居中 -->
         <div class="col-6 offset-3">
+
             <!-- card template from bootstrap document -->
             <div class="card mb-5">
                 <img src="<%= campground.image %>" class="card-img-top" alt="...">
                 <div class="card-body">
+
                     <!-- title -->
                     <h5 class="card-title">
                         <%= campground.title %>
                     </h5>
+
                     <!-- description -->
                     <p class="card-text">
                         <%= campground.description %>
@@ -20,10 +24,12 @@
 
                 <!-- list of texts -->
                 <ul class="list-group list-group-flush">
+
                     <!-- location -->
                     <li class="list-group-item text-muted">
                         <%= campground.location %>
                     </li>
+
                     <!-- price -->
                     <li class="list-group-item">
                         $<%= campground.price %> / night
@@ -35,13 +41,13 @@
                     <!-- edit is a button-like anchor -->
                     <a class="card-link btn btn-warning" href="/campgrounds/<%= campground._id %>/edit ">Edit</a>
 
-                    <!-- delete is a button-liek form -->
+                    <!-- delete is a button-like form -->
                     <form class="d-inline" action="/campgrounds/<%= campground._id %>?_method=delete" method="post">
                         <button class="btn btn-danger">Delete</button>
                     </form>
                 </div>
-
                 <div class="card-footer">
+
                     <!-- return to all campgrounds -->
                     <a href="/campgrounds">All Campgrounds</a>
                 </div>
