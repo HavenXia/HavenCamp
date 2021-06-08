@@ -96,6 +96,11 @@
                         <!-- comment -->
                         <p class="card-text"> Review: <%= review.body %>
                         </p>
+                        <!-- delete form and button -->
+                        <form action="/campgrounds/<%= campground._id%>/reviews/<%= review._id%>?_method=delete"
+                            method='post'>
+                            <button class="btn btn-sm btn-danger">Delete</button>
+                        </form>
                     </div>
                 </div>
                 <% } %>

@@ -140,6 +140,7 @@ app.put('/campgrounds/:id', validateCampground, catchAsync(async (req, res) => {
 
 
 // delete operation
+// 需要用到middleware in campground.js 
 app.delete('/campgrounds/:id', catchAsync(async (req, res) => {
     const { id } = req.params;
     await Campground.findByIdAndDelete(id);
@@ -147,6 +148,7 @@ app.delete('/campgrounds/:id', catchAsync(async (req, res) => {
 }))
 
 
+// review routes
 // add review at show page
 app.post('/campgrounds/:id/reviews', validateReview, catchAsync(async (req, res) => {
 
@@ -159,6 +161,19 @@ app.post('/campgrounds/:id/reviews', validateReview, catchAsync(async (req, res)
     await campground.save();
     // redriect to show page
     res.redirect(`/campgrounds/${campground._id}`);
+}))
+
+// delete reviews
+app.delete('/campgrounds/:id/reviews/:reviewId', catchAsync(async (req, res) => {
+
+    const { id, reviewId } = req.params;
+    // 这里的pull operator会把campground里面所有reviewId不等于当前reviewId的加进来!
+    // 其实就是删除了其中一个review
+    await Campground.findByIdAndUpdate(id, { $pull: { reviews: reviewId } })
+    // review的db里也要删除
+    await Review.findByIdAndDelete(reviewId)
+    res.redirect(`/campgrounds/${id}`)
+
 }))
 
 
