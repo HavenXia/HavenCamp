@@ -14,3 +14,12 @@ module.exports.campgroundSchema = Joi.object({
         description: Joi.string().required()
     }).required()
 });
+
+// JOI schema for reviews
+module.exports.reviewSchema = Joi.object({
+    // 这个object必须存在
+    review: Joi.object({
+        rating: Joi.number().required().min(1).max(5),
+        body: Joi.string().required()
+    }).required()
+})

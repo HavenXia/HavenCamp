@@ -18,7 +18,7 @@ const ExpressError = require('./utils/ExpressError')
 
 // sechema validation in js
 const Joi = require('joi')
-const { campgroundSchema } = require('./schemas.js')
+const { campgroundSchema, reviewSchema } = require('./schemas.js')
 
 // the review model 
 const Review = require('./models/review')
@@ -61,6 +61,19 @@ const validateCampground = (req, res, next) => {
         throw new ExpressError(msg, 400);
     } else {
         // if no error, must go to next handler
+        next();
+    }
+}
+
+// middleware in review form
+const validateReview = (req, res, next) => {
+    // server side validation - 防止有人从postman发送request
+    const { error } = reviewSchema.validate(req.body)
+    if (error) {
+        // concat error messages together
+        const msg = error.details.map(el => el.message).join(',')
+        throw new ExpressError(msg, 400);
+    } else {
         next();
     }
 }
@@ -134,7 +147,7 @@ app.delete('/campgrounds/:id', catchAsync(async (req, res) => {
 
 
 // add review at show page
-app.post('/campgrounds/:id/reviews', catchAsync(async (req, res) => {
+app.post('/campgrounds/:id/reviews', validateReview, catchAsync(async (req, res) => {
 
     const campground = await Campground.findById(req.params.id);
     const review = new Review(req.body.review);
