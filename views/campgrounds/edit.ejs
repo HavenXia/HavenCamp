@@ -77,27 +77,3 @@
             <a href="/campgrounds/<%= campground._id %>">Back to Campground</a>
         </div>
     </div>
-
-    <script>
-        // 当bootstrap validation error时, 不发送request!
-        (function () {
-            'use strict'
-
-            // Fetch all the forms we want to apply custom Bootstrap validation styles to
-            // 这里的id和form的id必须相同!
-            const forms = document.querySelectorAll('.validated-form')
-
-            // Loop over them and prevent submission
-            Array.from(forms)
-                .forEach(function (form) {
-                    form.addEventListener('submit', function (event) {
-                        if (!form.checkValidity()) {
-                            event.preventDefault()
-                            event.stopPropagation()
-                        }
-
-                        form.classList.add('was-validated')
-                    }, false)
-                })
-        })()
-    </script>

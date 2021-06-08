@@ -56,7 +56,8 @@
             <h2>Leave a Review</h2>
 
             <!-- form for review, 此时依旧在居中-->
-            <form action="">
+            <form class="mb-3 validated-form" action="/campgrounds/<%=campground._id%>/reviews" method="post"
+                novalidate>
 
                 <!-- review rating part -->
                 <div class="mb-3">
@@ -70,7 +71,13 @@
                     <!-- label 和form都用bootstrap -->
                     <label class="form-label" for="body">Review</label>
                     <!-- 同样wrap在req.body.review中 -->
-                    <textarea class="form-control" name="review[body]" id="body" cols="30" rows="10"></textarea>
+                    <textarea class="form-control" name="review[body]" id="body" cols="30" rows="10"
+                        required></textarea>
+
+                    <!-- when input is valid, given this feedback -->
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
                 </div>
 
                 <button class="btn btn-success">Submit</button>

@@ -20,6 +20,9 @@ const ExpressError = require('./utils/ExpressError')
 const Joi = require('joi')
 const { campgroundSchema } = require('./schemas.js')
 
+// the review model 
+const Review = require('./models/review')
+
 // connect to database
 mongoose.connect('mongodb://localhost:27017/haven-camp', {
     useNewUrlParser: true,
@@ -103,7 +106,6 @@ app.get('/campgrounds/:id', catchAsync(async (req, res) => {
 }))
 
 
-
 // edit form operation, the order matters
 app.get('/campgrounds/:id/edit', catchAsync(async (req, res) => {
     // get the id from input
@@ -129,6 +131,22 @@ app.delete('/campgrounds/:id', catchAsync(async (req, res) => {
     await Campground.findByIdAndDelete(id);
     res.redirect(`/campgrounds`)
 }))
+
+
+// add review at show page
+app.post('/campgrounds/:id/reviews', catchAsync(async (req, res) => {
+
+    const campground = await Campground.findById(req.params.id);
+    const review = new Review(req.body.review);
+    // push the review to the campground
+    campground.reviews.push(review);
+    // save both
+    await review.save();
+    await campground.save();
+    // redriect to show page
+    res.redirect(`/campgrounds/${campground._id}`);
+}))
+
 
 // all request that cannot match above will be handled by this!
 // 这种情况就抛出404 error, 这里不是async, 所以需要自己next()
