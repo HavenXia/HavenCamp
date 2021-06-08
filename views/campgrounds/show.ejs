@@ -52,5 +52,28 @@
                     <a href="/campgrounds">All Campgrounds</a>
                 </div>
             </div>
+
+            <h2>Leave a Review</h2>
+
+            <!-- form for review, 此时依旧在居中-->
+            <form action="">
+
+                <!-- review rating part -->
+                <div class="mb-3">
+                    <label class="form-label" for="rating">Rating</label>
+                    <input class="form-range" type="range" min="1" max="5" name="review[rating]" id="rating">
+
+                </div>
+
+                <!-- review body part -->
+                <div class="mb-3">
+                    <!-- label 和form都用bootstrap -->
+                    <label class="form-label" for="body">Review</label>
+                    <!-- 同样wrap在req.body.review中 -->
+                    <textarea class="form-control" name="review[body]" id="body" cols="30" rows="10"></textarea>
+                </div>
+
+                <button class="btn btn-success">Submit</button>
+            </form>
         </div>
     </div>
