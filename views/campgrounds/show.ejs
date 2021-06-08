@@ -3,8 +3,8 @@
 
     <div class="row">
 
-        <!-- 居中 -->
-        <div class="col-6 offset-3">
+        <!-- 占左半边 -->
+        <div class="col-6">
 
             <!-- card template from bootstrap document -->
             <div class="card mb-5">
@@ -52,10 +52,13 @@
                     <a href="/campgrounds">All Campgrounds</a>
                 </div>
             </div>
+        </div>
 
+        <!-- 右半边包括add review和existing reviews -->
+        <div class="col-6">
             <h2>Leave a Review</h2>
 
-            <!-- form for review, 此时依旧在居中-->
+            <!-- form for add review, 此时依旧在居中-->
             <form class="mb-3 validated-form" action="/campgrounds/<%=campground._id%>/reviews" method="post"
                 novalidate>
 
@@ -71,8 +74,7 @@
                     <!-- label 和form都用bootstrap -->
                     <label class="form-label" for="body">Review</label>
                     <!-- 同样wrap在req.body.review中 -->
-                    <textarea class="form-control" name="review[body]" id="body" cols="30" rows="10"
-                        required></textarea>
+                    <textarea class="form-control" name="review[body]" id="body" cols="30" rows="5" required></textarea>
 
                     <!-- when input is valid, given this feedback -->
                     <div class="valid-feedback">
@@ -82,5 +84,20 @@
 
                 <button class="btn btn-success">Submit</button>
             </form>
+
+
+            <!-- Show all existing reviews -->
+            <% for (let review of campground.reviews) { %>
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <!-- Rating -->
+                        <h5 class="card-title"> Rating: <%= review.rating %>
+                        </h5>
+                        <!-- comment -->
+                        <p class="card-text"> Review: <%= review.body %>
+                        </p>
+                    </div>
+                </div>
+                <% } %>
         </div>
     </div>

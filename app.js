@@ -113,7 +113,8 @@ app.post('/campgrounds', validateCampground, catchAsync(async (req, res) => {
 app.get('/campgrounds/:id', catchAsync(async (req, res) => {
     // get the id from input
     const { id } = req.params;
-    const campground = await Campground.findById(id);
+    // populate reviews to show them on show page
+    const campground = await Campground.findById(id).populate('reviews');
     // render the found campground to ejs
     res.render('campgrounds/show', { campground })
 }))
