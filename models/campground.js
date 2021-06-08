@@ -8,7 +8,16 @@ const CampgroundSchema = new Schema({
     image: String,
     price: Number,
     description: String,
-    location: String
+    location: String,
+    // array of object id (ref) of reviews
+    // 这里是mongo relations
+    reviews: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Review'
+        }
+    ]
+
 });
 
 // create the collection and name the model 
